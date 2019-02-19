@@ -121,7 +121,8 @@ namespace WeddingPlanner.Controllers
             {
                 dbContext.Add(NewWedding);
                 dbContext.SaveChanges();
-                return RedirectToAction("Dashboard");
+                System.Console.WriteLine("Wedding ID: "+ NewWedding.WeddingId);
+                return Redirect("/details/"+NewWedding.WeddingId);
             }
             else
             {
@@ -153,11 +154,7 @@ namespace WeddingPlanner.Controllers
         public IActionResult DeleteGuest(int wedId)
         {
             int? SessionId = HttpContext.Session.GetInt32("CurrentUser");
-            System.Console.WriteLine("DELETING A GUEST");
-            System.Console.WriteLine("Wedding ID is" + wedId);
-            System.Console.WriteLine("User ID is" + SessionId);
             Guest ToRemove = dbContext.Guests.FirstOrDefault(g => g.UserId == SessionId && g.WeddingId == wedId);
-            System.Console.WriteLine(ToRemove.GuestId);
             dbContext.Guests.Remove(ToRemove);
             dbContext.SaveChanges();
             return RedirectToAction("Dashboard");
@@ -168,11 +165,7 @@ namespace WeddingPlanner.Controllers
         public IActionResult AddGuest(int wedId)
         {
             int? SessionId = HttpContext.Session.GetInt32("CurrentUser");
-            System.Console.WriteLine("ADDING A GUEST");
-            System.Console.WriteLine("Wedding ID is" + wedId);
-            System.Console.WriteLine("User ID is" + SessionId);
             Guest NewGuest = new Guest((int)SessionId, wedId);
-            System.Console.WriteLine("User ID is " +NewGuest.UserId+ "Wedding ID is" +NewGuest.WeddingId);
             dbContext.Add(NewGuest);
             dbContext.SaveChanges();
             return RedirectToAction("Dashboard");
