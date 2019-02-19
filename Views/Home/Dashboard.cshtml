@@ -1,0 +1,54 @@
+@model List<Wedding>
+
+<h1>Dashboard!</h1>
+<a href="/logout">Logout</a>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Wedding</th>
+      <th scope="col">Date</th>
+      <th scope="col">Guests</th>
+      <th scope="col">Action</th>
+    </tr>
+  </thead>
+  <tbody>
+      @foreach(var wedding in @Model)
+      {
+        <tr>
+            <td><a href="/details/@wedding.WeddingId">@wedding.WedderOne & @wedding.WedderTwo</a>  </td>
+            <td>@wedding.Date</td>
+            <td>@wedding.Guests.Count</td>
+            @if(@wedding.UserId == @ViewBag.SessionId)
+            {
+                <td> <a href="/delete/@wedding.WeddingId">Delete</a> </td>
+            }
+            else
+            {
+                var Going = false;
+                @foreach(var wed in @ViewBag.Attending.GoingTo)
+                {
+                    @if(wed.WeddingId == @wedding.WeddingId)
+                    {
+                        Going = true;
+                    }
+                }
+                @if(Going == true)
+                {
+                    <td><a href="/deleteguest/@wedding.WeddingId">UnRSVP</a></td>
+                }
+                else
+                {
+                    <td><a href="/addguest/@wedding.WeddingId">RSVP</a></td>
+                }
+                
+            }
+            
+        
+        </tr>
+      }
+    
+  </tbody>
+</table>
+
+<a href="/add">New Wedding</a>

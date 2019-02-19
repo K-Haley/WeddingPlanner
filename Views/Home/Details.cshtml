@@ -1,0 +1,11 @@
+@model Wedding
+
+<h1>@Model.WedderOne and @Model.WedderTwo</h1>
+
+<h4>Date: @Model.Date</h4>
+
+<h4>Guests:</h4>
+@foreach(var guest in @Model.Guests)
+{
+    <p>@guest.Owner.FirstName</p>
+}
